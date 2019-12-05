@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Bright Ideas</title>
+</head>
+<body>
+
+    <h1>Hi {{user_data['name']}}!</h1>
+    
+    <a href="/logout">Logout</a>
+
+    {% with messages = get_flashed_messages() %}     <!-- declare a variable called messages -->
+    {% if messages %}                            <!-- check if there are any messages -->
+    {% for message in messages %}            <!-- loop through the messages -->
+    <p>{{message}}</p>                   <!-- display each message in a paragraph tag -->
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <form action="/process_idea" method="POST">
+        <p>Post something witty here: <input type="text" name="idea_content"></p>
+        <input type="submit" value="Idea!">
+    </form>
+    
+    <br>
+    {% for idea in idea_data %}
+        <p><a href="">{{idea['alias']}}</a> says: {{idea['idea_content']}}</p>
+
+        {% if idea.author == session['user_id'] %}
+        <p><a href="/delete_idea/{{idea['idea_id']}}"><button>X</button></a></p>
+        {% endif %}
+
+        <p><a href="/like_idea/{{idea['idea_id']}}"><button>Like</button></a></p>
+
+        <p><a href="/bright_ideas_details/{{idea['idea_id']}}"> {{idea['like_count']}} people</a> like this.</p>
+ 
+        <br>
+
+    {% endfor %}
+
+
+
+</body>
+</html>
